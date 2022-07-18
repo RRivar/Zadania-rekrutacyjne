@@ -1,13 +1,57 @@
 <?php
     Class PhoneKeyboardConverter {
         public $output = "", $error = "", $input = "";
+        private $zamiennik;
         
-        function setInput($input) {
+        function setVariable($input, $zamiennik) {
             $input = strtolower($input);
             $this->input = $input;
+            $this->zamiennik = $zamiennik;
         }
-        
-        private $zamiennik = array(
+
+        function convertToNumeric($input) {
+            $inputArray = str_split($input);
+            $convertedValue = "";
+            $count = 1;
+            foreach ($inputArray as $key => $value) {
+                $convertedValue .= array_search($value, $this->zamiennik);
+                if($count != count($inputArray)) {
+                    $convertedValue .= ",";
+                }
+                $count++;
+            }
+            return $convertedValue;
+        }
+
+        function convertToString($input) {
+            $inputArray = explode(',', $input);
+            $convertedValue = "";
+            foreach ($inputArray as $key => $value) {
+                $convertedValue .= $this->zamiennik[$value];
+                if ($key == 0) {
+                    $convertedValue = strtoupper($convertedValue);
+                } elseif ($key > 2) {
+                    if ($inputArray[$key-2] == '11' && $inputArray[$key-1] == '0') {
+                        $convertedValue[$key] = strtoupper($convertedValue[$key]);
+                    }
+                }
+            }
+            return $convertedValue;
+        }
+
+        function start() {
+            if (preg_match('~[0-9]+~', $this->input)) {
+                $this->output = $this->ConvertToString($this->input);
+            } else {
+                $this->output = $this->convertToNumeric($this->input);
+            }
+        }
+    }
+
+    $converter = new PhoneKeyboardConverter();
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $zamiennik = array(
             2 => 'a',
             22 => 'b',
             222 => 'c',
@@ -38,50 +82,8 @@
             1 => ',',
             11 => '.'
         );
-
-        function convertToNumeric($input) {
-            $inputArray = str_split($input);
-            $convertedValue = "";
-            $count = 1;
-            foreach ($inputArray as $key => $value) {
-                $convertedValue .= array_search($value, $zamiennik);
-                if($count != count($inputArray)) {
-                    $convertedValue .= ",";
-                }
-                $count++;
-            }
-            return $convertedValue;
-        }
-
-        function convertToString($input) {
-            $inputArray = str_split($input);
-            $convertedValue = "";
-            foreach ($inputArray as $key => $value) {
-                $convertedValue .= $lettersToKeys[$value];
-                if ($key == 0) {
-                    $convertedValue = strtoupper($convertedValue);
-                } elseif ($key > 2) {
-                    if ($inputArray[$key-2] == '11' && $inputArray[$key-1] == '0') {
-                        $convertedValue[$key] = strtoupper($convertedValue[$key]);
-                    }
-                }
-            }
-            return $convertedValue;
-        }
-
-        function start() {
-            if (preg_match('~[0-9]+~', $this->input)) {
-                $this->output = $this->ConvertToString($this->input);
-            } else {
-                $this->output = $this->convertToNumeric($this->input);
-            }
-        }
-    }
-
-    $converter = new PhoneKeyboardConverter();
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $converter->setInput($_POST['input']);
+        
+        $converter->setVariable($_POST['input'], $zamiennik);
 
         $converter->start();
     }
