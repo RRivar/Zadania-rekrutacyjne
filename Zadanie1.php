@@ -6,106 +6,46 @@
             $input = strtolower($input);
             $this->input = $input;
         }
+        
+        private $zamiennik = array(
+            2 => 'a',
+            22 => 'b',
+            222 => 'c',
+            3 => 'd',
+            33 => 'e',
+            333 => 'f',
+            4 => 'g',
+            44 => 'h',
+            444 => 'i',
+            5 => 'j',
+            55 => 'k',
+            555 => 'l',
+            6 => 'm',
+            66 => 'n',
+            666 => 'o',
+            7 => 'p',
+            77 => 'q',
+            777 => 'r',
+            7777 => 's',
+            8 => 't',
+            88 => 'u',
+            888 => 'v',
+            9 => 'w',
+            99 => 'x',
+            999 => 'y',
+            9999 => 'z',
+            0 => ' ',
+            1 => ',',
+            11 => '.'
+        );
 
         function convertToNumeric($input) {
+            $inputArray = str_split($input);
             $convertedValue = "";
-            $count = 0;
-            while ($count < strlen($input)) {
-                switch ($input[$count]) {
-                    case 'a':
-                        $convertedValue .= "2";
-                    break;
-                    case 'b':
-                        $convertedValue .= "22";
-                    break;
-                    case 'c':
-                        $convertedValue .= "222";
-                    break;
-                    case 'd':
-                        $convertedValue .= "3";
-                    break;
-                    case 'e':
-                        $convertedValue .= "33";
-                    break;
-                    case 'f':
-                        $convertedValue .= "333";
-                    break;
-                    case 'g':
-                        $convertedValue .= "4";
-                    break;
-                    case 'h':
-                        $convertedValue .= "44";
-                    break;
-                    case 'i':
-                        $convertedValue .= "444";
-                    break;
-                    case 'j':
-                        $convertedValue .= "5";
-                    break;
-                    case 'k':
-                        $convertedValue .= "55";
-                    break;
-                    case 'l':
-                        $convertedValue .= "555";
-                    break;
-                    case 'm':
-                        $convertedValue .= "6";
-                    break;
-                    case 'n':
-                        $convertedValue .= "66";
-                    break;
-                    case 'o':
-                        $convertedValue .= "666";
-                    break;
-                    case 'p':
-                        $convertedValue .= "7";
-                    break;
-                    case 'q':
-                        $convertedValue .= "77";
-                    break;
-                    case 'r':
-                        $convertedValue .= "777";
-                    break;
-                    case 's':
-                        $convertedValue .= "7777";
-                    break;
-                    case 't':
-                        $convertedValue .= "8";
-                    break;
-                    case 'u':
-                        $convertedValue .= "88";
-                    break;
-                    case 'v':
-                        $convertedValue .= "888";
-                    break;
-                    case 'w':
-                        $convertedValue .= "9";
-                    break;
-                    case 'x':
-                        $convertedValue .= "99";
-                    break;
-                    case 'y':
-                        $convertedValue .= "999";
-                    break;
-                    case 'z':
-                        $convertedValue .= "9999";
-                    break;
-                    case ' ':
-                        $convertedValue .= "0";
-                    break;
-                    case '.':
-                        $convertedValue .= "11";
-                    break;
-                    case ',':
-                        $convertedValue .= "1";
-                    break;
-                    
-                    default:
-                        $this->error = "W polu znajduje sie niedozwolony znak!<br>Dozwolone znaki [A-Z], [a-z], ',', '.'";
-                        return;
-                    break;
-                }
-                if($count != strlen($input)-1) {
+            $count = 1;
+            foreach ($inputArray as $key => $value) {
+                $convertedValue .= array_search($value, $zamiennik);
+                if($count != count($inputArray)) {
                     $convertedValue .= ",";
                 }
                 $count++;
@@ -114,103 +54,10 @@
         }
 
         function convertToString($input) {
-            $inputArray = explode(",", $input);
+            $inputArray = str_split($input);
             $convertedValue = "";
             foreach ($inputArray as $key => $value) {
-                switch ($value) {
-                    case '2':
-                        $convertedValue .= "a";
-                    break;
-                    case '22':
-                        $convertedValue .= "b";
-                    break;
-                    case '222':
-                        $convertedValue .= "c";
-                    break;
-                    case '3':
-                        $convertedValue .= "d";
-                    break;
-                    case '33':
-                        $convertedValue .= "e";
-                    break;
-                    case '333':
-                        $convertedValue .= "f";
-                    break;
-                    case '4':
-                        $convertedValue .= "g";
-                    break;
-                    case '44':
-                        $convertedValue .= "h";
-                    break;
-                    case '444':
-                        $convertedValue .= "i";
-                    break;
-                    case '5':
-                        $convertedValue .= "j";
-                    break;
-                    case '55':
-                        $convertedValue .= "k";
-                    break;
-                    case '555':
-                        $convertedValue .= "l";
-                    break;
-                    case '6':
-                        $convertedValue .= "m";
-                    break;
-                    case '66':
-                        $convertedValue .= "n";
-                    break;
-                    case '666':
-                        $convertedValue .= "o";
-                    break;
-                    case '7':
-                        $convertedValue .= "p";
-                    break;
-                    case '77':
-                        $convertedValue .= "q";
-                    break;
-                    case '777':
-                        $convertedValue .= "r";
-                    break;
-                    case '7777':
-                        $convertedValue .= "s";
-                    break;
-                    case '8':
-                        $convertedValue .= "t";
-                    break;
-                    case '88':
-                        $convertedValue .= "u";
-                    break;
-                    case '888':
-                        $convertedValue .= "v";
-                    break;
-                    case '9':
-                        $convertedValue .= "w";
-                    break;
-                    case '99':
-                        $convertedValue .= "x";
-                    break;
-                    case '999':
-                        $convertedValue .= "y";
-                    break;
-                    case '9999':
-                        $convertedValue .= "z";
-                    break;
-                    case '0':
-                        $convertedValue .= " ";
-                    break;
-                    case '11':
-                        $convertedValue .= ".";
-                    break;
-                    case '1':
-                        $convertedValue .= ",";
-                    break;
-                    
-                    default:
-                        $this->error = "W polu znajduje sie niedozwolony znak!<br>Dozwolone znaki [0-9], ','";
-                        return;
-                    break;
-                }
+                $convertedValue .= $lettersToKeys[$value];
                 if ($key == 0) {
                     $convertedValue = strtoupper($convertedValue);
                 } elseif ($key > 2) {
